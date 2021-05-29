@@ -1,5 +1,5 @@
 
-class GameControl:
+class GameRules:
     sequence: str
     current_location: int
 
@@ -37,7 +37,7 @@ class GameControl:
 
 # Used for testing
 if __name__ == "__main__":
-    test = GameControl()
+    test = GameRules()
     
     # Initial test for game_won(), next_codon(), and return_codon()
     if test.game_won() != False:
