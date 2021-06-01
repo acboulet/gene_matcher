@@ -12,10 +12,15 @@ class ConsolePlay:
     """
     def run(self):
         while not self.control.rules.game_won():
-            self.start_turn()
-            user_values = self.take_turn()
-            # Check turn
-            possible_codons = self.control.board.possible_codons(user_values)
+            while not correct_turn:
+                self.start_turn()
+                user_values = self.take_turn()
+                codon_match = self.check_turn(user_values)
+                correct_turn = False
+                if codon_match[0]:
+                    correct_turn = True
+                else:
+                    print("Player choice of codons do not match target")
             print(user_values)
             print(possible_codons)
 
@@ -76,3 +81,21 @@ class ConsolePlay:
                 return int(val)
             else:
                 print("Input was not correct. Try again.")
+
+    """
+    Purpose:
+        Checks to make sure the user selection matches the target codon.
+    Precond:
+        :param user_picks: list where [0] is first location and [1] is second location
+                            first integer is the row, and second is the column
+    Return: True if user codon matches target codon
+            Str value corresponding to which codon matched
+    """
+    def check_turn(self, user_picks: list([[int, int], [int, int]])) -> tuple(bool, str):
+        possible_codons = []
+        for choice in user_picks:
+            possible_codons.extend(self.control.board.possible_codons(choice))
+        codon_match = self.control.valid_codon(possible_codons)
+        if codon_match != None:
+            return (True, codon_match)
+        return (False, codon_match)

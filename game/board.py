@@ -45,6 +45,7 @@ class GameBoard:
         List containing codons for [0] horizontal and [1] vertical options.
     """
     def possible_codons(self, player_choice: list([int, int])) -> list([str, str]):
+        # TODO currently it does not ask the pieces to switch
         possible_codons = [None,None] # hor, vert
         row, col = player_choice
         # If the col value is left/right then there is no horizontal option
