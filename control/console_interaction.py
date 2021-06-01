@@ -14,6 +14,7 @@ class ConsolePlay:
         while not self.control.rules.game_won():
             self.start_turn()
             user_values = self.take_turn()
+            # Check turn
             possible_codons = self.control.board.possible_codons(user_values)
             print(user_values)
             print(possible_codons)
@@ -43,12 +44,21 @@ class ConsolePlay:
     Return:
         A list where [0] is the row selected, and [1] is the column
     """
-    def take_turn(self) -> list([int, int]):
-        user_values = [None, None]
-        print("Please select a row:")
-        user_values[0] = self.user_pick_spot()
-        print("Please select a col:")
-        user_values[1] = self.user_pick_spot()
+    def take_turn(self) -> list([[int, int], [int, int]]):
+        user_values =[[None, None], [None, None]]
+        correct = False # Ensure the two spaces selected are adjacent
+        while not correct:
+            for n in range(2):
+                print("Select base %i to switch" % (n+1))
+                print("Please select a row:", end=" ")
+                user_values[n][0] = self.user_pick_spot()
+                print("Please select a col:", end=" ")
+                user_values[n][1] = self.user_pick_spot()
+            
+            if self.control.spots_adjacent(user_values):
+                correct = True
+            else:
+                print("Bases are not adjacent in square. Try again")
         return user_values
 
     """
@@ -66,4 +76,3 @@ class ConsolePlay:
                 return int(val)
             else:
                 print("Input was not correct. Try again.")
-            # TODO: build function to check user input, include if it is any corner          
