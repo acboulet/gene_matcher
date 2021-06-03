@@ -46,21 +46,23 @@ class GameControl(board.GameBoard, game_rules.GameRules):
     """
     def valid_codon(self, potential_codons: list([str])):
         target = self.rules.get_codon()
-        if target == potential_codons[0]:
+        if target == potential_codons[0] or target[::-1] == potential_codons[1]:
             return "hor1"
-        elif target == potential_codons[1]:
+        elif target == potential_codons[1] or target[::-1] == potential_codons[1]:
             return "ver1"
-        elif target == potential_codons[2]:
+        elif target == potential_codons[2] or target[::-1] == potential_codons[2]:
             return "hor2"
-        elif target == potential_codons[3]:
+        elif target == potential_codons[3] or target[::-1] == potential_codons[3]:
             return "ver2"
         else:
             return None
 
-if __name__ == "__main__":
-    
+# TODO create a function that deletes replaces the base pairs that match
+# TODO create a function that checks the board to make sure the codon is there
+# TODO creeate a function that resets the board if above function doesn't return true
 
-    #test for spots_adjacent()
+if __name__ == "__main__":
+        #test for spots_adjacent()
     test = GameControl()
     selection = [[4,4],[5,5]]
     result = test.spots_adjacent(selection)
