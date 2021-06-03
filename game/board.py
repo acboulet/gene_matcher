@@ -63,6 +63,64 @@ class GameBoard:
 
     """
     Purpose:
+        Given a players choice of row and column values, return all possible codons originating from that spot
+    Pre:
+        :param player_choice: row and column value choice by player (not indices)
+    Return:
+        List of every possible codon. Each item as follows:
+            [0] : String for codon
+            [1] : [int, int] for location of first base
+            [2] : [int, int] for location of second base
+            [3] : [int, int] for location of third base
+    """
+    def possible_codon_v2(self, player_choices: list([int, int])):
+        row_index = player_choices[0] - 1
+        col_index = player_choices[1] - 1
+        
+
+        codons = []
+        
+        # move along the row, and grab each three-base codon
+        # if reaching the end of the board (col = 6) or user choice then stop
+        col = col_index - 2 # -2 to find starting base
+        # If more than index 6 (column 7) then cannot grab 3 bases
+        while col < 6 and col <= col_index:
+            if col >= 0:
+                #[ codon, h:v1, h:v2, h:v3]
+                codon = []
+                first = self.game_board[row_index][col]
+                second = self.game_board[row_index][col+1]
+                third = self.game_board[row_index][col+2]
+                seq = first + second + third
+                codon.append(seq)
+                codon.append([row_index + 1, col+1])
+                codon.append([row_index + 1, col+2])
+                codon.append([row_index + 1, col+3])
+                codons.append(codon)
+            col += 1
+
+         # move down the column, and grab each three-base codon
+        # if reaching the end of the board (row = 6) or user choice then stop
+        row = row_index -2 
+        while row < 6 and row <= row_index:
+            if row >= 0:
+                #[ codon, h:v1, h:v2, h:v3]
+                codon = []
+                first = self.game_board[row][col_index]
+                second = self.game_board[row + 1][col_index]
+                third = self.game_board[row + 2][col_index]
+                seq = first + second + third
+                codon.append(seq)
+                codon.append([row + 1, col_index + 1])
+                codon.append([row + 2, col_index + 1])
+                codon.append([row + 3, col_index + 1])
+                codons.append(codon)
+            row += 1    
+        
+        return codons
+
+    """
+    Purpose:
         Output the gameboard as a String
     Return:
         The gameboard as a printable string
@@ -88,16 +146,40 @@ if __name__ == "__main__":
         print("possible_codon selection on corner does yield None, None")
         print(result)
     
-    # Print statements because of randomly generated table
-    print("Test grabbing row 1 and col 4, should yield no vertical value:")
-    result = test_board.possible_codons([1,4])
-    print(result)
-    print("Test grabbing row 4 and col 1, should yield no horizontal value:")
-    result = test_board.possible_codons([4,1])
-    print(result)
-    print("Test grabbing row 4 and col 4, should yield center board:")
-    result = test_board.possible_codons([4,4])
-    print(result)
+    # # Print statements because of randomly generated table
+    # print("Test grabbing row 1 and col 4, should yield no vertical value:")
+    # result = test_board.possible_codons([1,4])
+    # print(result)
+    # print("Test grabbing row 4 and col 1, should yield no horizontal value:")
+    # result = test_board.possible_codons([4,1])
+    # print(result)
+    # print("Test grabbing row 4 and col 4, should yield center board:")
+    # result = test_board.possible_codons([4,4])
+    # print(result)
+    # print("")
 
-
+    
+    # Print statements testing possible_codon_helper
+    print("Testing grabbing from center with v2")
+    result = test_board.possible_codon_v2([4,4])
+    print(result)
+    print("Testing grabbing from left with v2")
+    result = test_board.possible_codon_v2([4,1])
+    print(result)
+    print("Testing grabbing from right with v2")
+    result = test_board.possible_codon_v2([4,8])
+    print(result)
+    print("Testing grabbing from top with v2")
+    result = test_board.possible_codon_v2([1,4])
+    print(result)
+    print("Testing grabbing from bottom with v2")
+    result = test_board.possible_codon_v2([8,4])
+    print(result)
+    print("Testing grabbing from top corner with v2")
+    result = test_board.possible_codon_v2([1,1])
+    print(result)
+    print("Testing grabbing from bottom with v2")
+    result = test_board.possible_codon_v2([8,8])
+    print(result)
+    
     

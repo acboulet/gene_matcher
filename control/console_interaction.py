@@ -57,6 +57,7 @@ class ConsolePlay:
         correct = False # Ensure the two spaces selected are adjacent
         while not correct:
             for n in range(2):
+                # TODO: Flip the two bases, and try to match. If not, flip back
                 print("Select base %i to switch" % (n+1))
                 print("Please select a row:", end=" ")
                 user_values[n][0] = self.user_pick_spot()

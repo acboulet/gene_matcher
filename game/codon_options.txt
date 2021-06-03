@@ -1,0 +1,35 @@
+
+
+      A
+      B
+C  D  E  F  G
+      H
+      I
+
+If row or col = 1 or 8 then options = 4
+If row or col = 2 or 7 then options = 5
+Otherwise 6 options
+
+
+0 1 2 3 4 5 6 7
+1
+2
+3
+4
+5
+6
+7
+
+
+Option 4:
+Pick spot 3
+Start at -1
+
+Possibilities
+ABE
+ BEH
+  EHI
+CDE
+ DEF
+  EFG
+*ALL REVERSES AS WELL.
