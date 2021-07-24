@@ -1,3 +1,4 @@
+from game.codon_target import CodonTarget
 from game import board, game_rules
 # import board, game_rules
 
@@ -28,7 +29,7 @@ class GameControl():
             return True
         return False
 
-    def valid_codon(self, potential_codons):
+    def valid_codon(self, potential_codons: list([CodonTarget])) -> CodonTarget:
         """
         Purpose:
             Checks a list of potential codons to see if it matches the game's target
@@ -46,7 +47,7 @@ class GameControl():
         # Check each codon in the potential list
         for codon in potential_codons:
             # if the string matches the target sequence, then return the entire codon item
-            if target == codon[0] or target.__reversed__ == codon[0]:
+            if target == codon.codon or target.__reversed__ == codon.codon:
                 return codon
         return None
 

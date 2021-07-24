@@ -1,3 +1,7 @@
+from game.codon_target import CodonTarget
+# from codon_target import CodonTarget
+
+
 class GameRules:
     sequence: str
     current_location: int
@@ -87,15 +91,12 @@ class GameRules:
         while col < 6 and col <= col_index:
             if col >= 0:
                 # [ codon, h:v1, h:v2, h:v3]
-                codon = []
                 first = game_board[row_index][col]
                 second = game_board[row_index][col+1]
                 third = game_board[row_index][col+2]
                 seq = first + second + third
-                codon.append(seq)
-                codon.append([row_index + 1, col+1])
-                codon.append([row_index + 1, col+2])
-                codon.append([row_index + 1, col+3])
+                codon = CodonTarget(
+                    seq, [row_index + 1, col+1], [row_index + 1, col+2], [row_index + 1, col+3])
                 codons.append(codon)
             col += 1
 
@@ -105,19 +106,17 @@ class GameRules:
         while row < 6 and row <= row_index:
             if row >= 0:
                 # [ codon, h:v1, h:v2, h:v3]
-                codon = []
                 first = game_board[row][col_index]
                 second = game_board[row + 1][col_index]
                 third = game_board[row + 2][col_index]
                 seq = first + second + third
-                codon.append(seq)
-                codon.append([row + 1, col_index + 1])
-                codon.append([row + 2, col_index + 1])
-                codon.append([row + 3, col_index + 1])
+                codon = CodonTarget(
+                    seq, [row + 1, col_index + 1], [row + 2, col_index + 1], [row + 3, col_index + 1])
                 codons.append(codon)
             row += 1
 
         return codons
+
 
         # Used for testing
 if __name__ == "__main__":
@@ -184,23 +183,38 @@ if __name__ == "__main__":
     print("--")
     print("Testing grabbing from center")
     result = test.possible_codons([4, 4], test_board)
-    print(result)
+    for item in result:
+        print(item.to_string(), end="")
+        print()
     print("Testing grabbing from left")
     result = test.possible_codons([4, 1], test_board)
-    print(result)
+    for item in result:
+        print(item.to_string(), end="")
+        print()
     print("Testing grabbing from right")
     result = test.possible_codons([4, 8], test_board)
-    print(result)
+    for item in result:
+        print(item.to_string(), end="")
+        print()
     print("Testing grabbing from top")
     result = test.possible_codons([1, 4], test_board)
-    print(result)
+    for item in result:
+        print(item.to_string(), end="")
+        print()
     print("Testing grabbing from bottom")
     result = test.possible_codons([8, 4], test_board)
-    print(result)
+    for item in result:
+        print(item.to_string(), end="")
+        print()
     print("Testing grabbing from top corner")
     result = test.possible_codons([1, 1], test_board)
-    print(result)
-    print("Testing grabbing from bottom")
+    for item in result:
+        print(item.to_string(), end="")
+        print()
+    print("Testing grabbing from bottom corner")
     result = test.possible_codons([8, 8], test_board)
+    for item in result:
+        print(item.to_string(), end="")
+        print()
 
     print("TESTING COMPLETE")
