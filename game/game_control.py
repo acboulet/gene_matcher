@@ -28,35 +28,40 @@ class GameControl():
             return True
         return False
 
-    def valid_codon(self, potential_codons: list([str])):
+    def valid_codon(self, potential_codons):
         """
         Purpose:
             Checks a list of potential codons to see if it matches the game's target
         Precond:
-            :param potential_codons: List of 4 potential codons
-                                        [0] horizontal codon from first position
-                                        [1] vertical codon from first position
-                                        [2] horizontal codon from second position
-                                        [3] vertical codon from second position
+            :param potential_codons: List of potential codons from game_rules.possible_codons
+                                        [0] string for codon
+                                        [1] [int, int] for location of first base
+                                        [2] [int, int] for location of second base
+                                        [3] [int, int] for location of third base
         Return:
-            A string corresponding to which of the 4 codons matched
+            The codon from the list of potential codons, that is a match
             Or None if none of them match
         """
         target = self.rules.get_codon()
-        if target == potential_codons[0] or target[::-1] == potential_codons[1]:
-            return "hor1"
-        elif target == potential_codons[1] or target[::-1] == potential_codons[1]:
-            return "ver1"
-        elif target == potential_codons[2] or target[::-1] == potential_codons[2]:
-            return "hor2"
-        elif target == potential_codons[3] or target[::-1] == potential_codons[3]:
-            return "ver2"
-        else:
-            return None
+        # Check each codon in the potential list
+        for codon in potential_codons:
+            # if the string matches the target sequence, then return the entire codon item
+            if target == codon[0] or target.__reversed__ == codon[0]:
+                return codon
+        return None
 
-    def check_turn(self, user_picks: list([[int, int], [int, int]])) -> bool:
+    def check_user_choices(self, user_picks: list([[int, int], [int, int]])) -> tuple([bool, list]):
+        """
+        Purpose:
+            Checks if user selection matches the target codon
+        Precond:
+            :param user_picks: list where [0] is first location and [1] is second location
+                                first integer is the row, and second is the column
+        Return: True if user codon matches the codon target, false otherwise
+                And the codon format as per game_rules.possible_codons()
+        """
+        # Create a new board where you have switched the two user choices
         new_board = self.game_board.copy()
-        # Select the two bases, and switch them
         base_1 = new_board[user_picks[0][0]][user_picks[0][1]]
         base_2 = new_board[user_picks[1][0]][user_picks[1][1]]
         holder = base_1
@@ -65,12 +70,20 @@ class GameControl():
 
         possible_codons = []
         for choice in user_picks:
-            possible_codons.extend(new_board.po)
+            possible_codons.extend(
+                self.rules.possible_codons(choice, new_board))
+        codon_match = self.valid_codon(possible_codons)
+        if codon_match != None:
+            self.board.game_board = new_board
+            return (True, codon_match)
+        else:
+            return (False, codon_match)
+            # TODO update this to now work with console_interaction
+            # TODO create a function that deletes replaces the base pairs that match
+            # TODO create a function that checks the board to make sure the codon is there
+            # TODO creeate a function that resets the board if above function doesn't return true
 
 
-# TODO create a function that deletes replaces the base pairs that match
-# TODO create a function that checks the board to make sure the codon is there
-# TODO creeate a function that resets the board if above function doesn't return true
 if __name__ == "__main__":
     # test for spots_adjacent()
     test = GameControl()
