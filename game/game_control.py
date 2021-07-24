@@ -2,10 +2,7 @@ from game import board, game_rules
 # import board, game_rules
 
 
-class GameControl(board.GameBoard, game_rules.GameRules):
-
-    board: board.GameBoard
-    rules: game_rules.GameRules
+class GameControl():
 
     def __init__(self) -> None:
         self.board = board.GameBoard()
@@ -57,12 +54,23 @@ class GameControl(board.GameBoard, game_rules.GameRules):
         else:
             return None
 
+    def check_turn(self, user_picks: list([[int, int], [int, int]])) -> bool:
+        new_board = self.game_board.copy()
+        # Select the two bases, and switch them
+        base_1 = new_board[user_picks[0][0]][user_picks[0][1]]
+        base_2 = new_board[user_picks[1][0]][user_picks[1][1]]
+        holder = base_1
+        base_1 = base_2
+        base_2 = holder
+
+        possible_codons = []
+        for choice in user_picks:
+            possible_codons.extend(new_board.po)
+
 
 # TODO create a function that deletes replaces the base pairs that match
 # TODO create a function that checks the board to make sure the codon is there
 # TODO creeate a function that resets the board if above function doesn't return true
-
-
 if __name__ == "__main__":
     # test for spots_adjacent()
     test = GameControl()

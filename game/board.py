@@ -9,6 +9,9 @@ class GameBoard:
     def __init__(self) -> None:
         self.new_board()
 
+    def get_board(self):
+        return self.game_board
+
     @staticmethod
     def new_board():
         """
@@ -37,6 +40,7 @@ class GameBoard:
         return bases[rand_int]
 
     def possible_codons(self, player_choice: list([int, int])) -> list([str, str]):
+        # TODO remove when game_rules is finished
         """
         Purpose:
             Given a players choice of row and column values, returns the horizontal and vertical codons at that location on the board
@@ -118,6 +122,7 @@ class GameBoard:
 
         return codons
 
+    # TODO does this need to be statci
     @staticmethod
     def to_string() -> str:
         """
