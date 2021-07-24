@@ -55,8 +55,8 @@ class ConsolePlay:
             A list where [0] is the row selected, and [1] is the column
         """
         user_values = [[None, None], [None, None]]
-        correct = False  # Ensure the two spaces selected are adjacent
-        while not correct:
+        adjacent = False  # Ensure the two spaces selected are adjacent
+        while not adjacent:
             for n in range(2):
                 # TODO: Flip the two bases, and try to match. If not, flip back
                 print("Select base %i to switch" % (n+1))
@@ -66,7 +66,7 @@ class ConsolePlay:
                 user_values[n][1] = self.user_pick_spot()
 
             if self.control.spots_adjacent(user_values):
-                correct = True
+                adjacent = True
             else:
                 print("Bases are not adjacent in square. Try again")
         return user_values
