@@ -57,6 +57,7 @@ class GameControl(board.GameBoard, game_rules.GameRules):
         else:
             return None
 
+
 # TODO create a function that deletes replaces the base pairs that match
 # TODO create a function that checks the board to make sure the codon is there
 # TODO creeate a function that resets the board if above function doesn't return true

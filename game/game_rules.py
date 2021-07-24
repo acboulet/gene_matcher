@@ -1,4 +1,3 @@
-
 class GameRules:
     sequence: str
     current_location: int
@@ -64,7 +63,7 @@ class GameRules:
         return sequence
 
 
-# Used for testing
+        # Used for testing
 if __name__ == "__main__":
     test = GameRules()
 
