@@ -9,44 +9,42 @@ class GameBoard:
     def __init__(self) -> None:
         self.new_board()
 
-    """
-    Purpose:
-        Build a new 8x8 game board with a random selection of bases at each spot
-        Should only be called upon initializing a new board
-    Post:
-        GameBoard.game_board will no longer be an empty list
-    """
     @staticmethod
     def new_board():
+        """
+        Purpose:
+            Build a new 8x8 game board with a random selection of bases at each spot
+            Should only be called upon initializing a new board
+        Post:
+            GameBoard.game_board will no longer be an empty list
+        """
         for n in range(8):
             row = []
             for i in range(8):
                 row.append(GameBoard.random_base())
             GameBoard.game_board.append(row)
 
-    """
-    Purpose: 
-        Generate a random potential DNA base
-    Return:
-        An individual string character
-    """
     @staticmethod
     def random_base() -> str:
+        """
+        Purpose: 
+            Generate a random potential DNA base
+        Return:
+            An individual string character
+        """
         bases = ["A", "C", "G", "T"]
         rand_int = randint(0, 3)
         return bases[rand_int]
-    # check if move was successful
-
-    """
-    Purpose:
-        Given a players choice of row and column values, returns the horizontal and vertical codons at that location on the board
-    Pre:
-        :param player_choice: row and column value choice by player (not indices)
-    Return:
-        List containing codons for [0] horizontal and [1] vertical options.
-    """
 
     def possible_codons(self, player_choice: list([int, int])) -> list([str, str]):
+        """
+        Purpose:
+            Given a players choice of row and column values, returns the horizontal and vertical codons at that location on the board
+        Pre:
+            :param player_choice: row and column value choice by player (not indices)
+        Return:
+            List containing codons for [0] horizontal and [1] vertical options.
+        """
         # TODO currently it does not ask the pieces to switch
         possible_codons = [None, None]  # hor, vert
         row, col = player_choice
@@ -63,20 +61,19 @@ class GameBoard:
             possible_codons[1] = first + second + third
         return possible_codons
 
-    """
-    Purpose:
-        Given a players choice of row and column values, return all possible codons originating from that spot
-    Pre:
-        :param player_choice: row and column value choice by player (not indices)
-    Return:
-        List of every possible codon. Each item as follows:
-            [0] : String for codon
-            [1] : [int, int] for location of first base
-            [2] : [int, int] for location of second base
-            [3] : [int, int] for location of third base
-    """
-
     def possible_codon_v2(self, player_choices: list([int, int])):
+        """
+        Purpose:
+            Given a players choice of row and column values, return all possible codons originating from that spot
+        Pre:
+            :param player_choice: row and column value choice by player (not indices)
+        Return:
+            List of every possible codon. Each item as follows:
+                [0] : String for codon
+                [1] : [int, int] for location of first base
+                [2] : [int, int] for location of second base
+                [3] : [int, int] for location of third base
+        """
         row_index = player_choices[0] - 1
         col_index = player_choices[1] - 1
 
@@ -121,14 +118,14 @@ class GameBoard:
 
         return codons
 
-    """
-    Purpose:
-        Output the gameboard as a String
-    Return:
-        The gameboard as a printable string
-    """
     @staticmethod
     def to_string() -> str:
+        """
+        Purpose:
+            Output the gameboard as a String
+        Return:
+            The gameboard as a printable string
+        """
         output = "Gameboard: \n"
         for line in GameBoard.game_board:
             for base in line:

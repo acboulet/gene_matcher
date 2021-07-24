@@ -7,48 +7,47 @@ class GameRules:
         self.sequence = "ATGAACTGA"
         self.current_location = 0
 
-    """
-    Purpose:
-        Checks if the player has won the game
-    Return:
-        True if player has won, False otherwise
-    """
     def game_won(self) -> bool:
+        """
+        Purpose:
+            Checks if the player has won the game
+        Return:
+            True if player has won, False otherwise
+        """
         return (self.current_location == len(self.sequence))
 
-    """
-    Purpose:
-        Moves selector to next codon section
-    Post cond:
-        self.current_location has moved forward 3
-    """
     def next_codon(self) -> None:
+        """
+        Purpose:
+            Moves selector to next codon section
+        Post cond:
+            self.current_location has moved forward 3
+        """
         self.current_location = self.current_location + 3
 
-    """
-    Purpose:
-        Grabs next codon in the sequence
-    Precond:
-        not game_won()
-    Return:
-        3-length string with current targetted codon
-    """
     def get_codon(self) -> str:
+        """
+        Purpose:
+            Grabs next codon in the sequence
+        Precond:
+            not game_won()
+        Return:
+            3-length string with current targetted codon
+        """
         if not self.game_won():
             return (self.sequence[self.current_location: self.current_location+3])
 
-
-    """
-    Purpose:
-        Get the game sequence but in three parts to make processing easier.
-    Precond:
-        not game_won()
-    Return:
-        List where [0] is upstream sequence
-                    [1] is codon searching for
-                    [2] is downstream sequence
-    """
     def get_sequence(self) -> list([str, str, str]):
+        """
+        Purpose:
+            Get the game sequence but in three parts to make processing easier.
+        Precond:
+            not game_won()
+        Return:
+            List where [0] is upstream sequence
+                        [1] is codon searching for
+                        [2] is downstream sequence
+        """
         sequence = [None, None, None]
         if not self.game_won():
             sequence[1] = self.get_codon()
@@ -60,13 +59,15 @@ class GameRules:
                 sequence[0] = self.sequence[0:self.current_location]
             else:
                 sequence[0] = self.sequence[0:self.current_location]
-                sequence[2] = self.sequence[self.current_location + 3:len(self.sequence)]
+                sequence[2] = self.sequence[self.current_location +
+                                            3:len(self.sequence)]
         return sequence
+
 
 # Used for testing
 if __name__ == "__main__":
     test = GameRules()
-    
+
     # Initial test for game_won(), next_codon(), and return_codon()
     if test.game_won() != False:
         print("game_won() not working without any turns")
@@ -77,7 +78,7 @@ if __name__ == "__main__":
     result = test.get_sequence()
     if result != [None, "ATG", "AACTGA"]:
         print("get_sequence() not working on first turn")
-    
+
     # move forward 1 codon, and test again
     test.next_codon()
     if test.game_won() != False:
@@ -90,7 +91,7 @@ if __name__ == "__main__":
     if result != ["ATG", "AAC", "TGA"]:
         print("get_sequence() not working on second turn")
 
-    # move forward to last codon, and test again  
+    # move forward to last codon, and test again
     test.next_codon()
     if test.game_won() != False:
         print("game_won() not working on last turn")
@@ -113,6 +114,5 @@ if __name__ == "__main__":
     result = test.get_sequence()
     if result != [None, None, None]:
         print("get_sequence() not working at end game")
-
 
     print("TESTING COMPLETE")

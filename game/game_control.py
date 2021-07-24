@@ -8,19 +8,19 @@ class GameControl(board.GameBoard, game_rules.GameRules):
     rules: game_rules.GameRules
 
     def __init__(self) -> None:
-        self.board= board.GameBoard()
+        self.board = board.GameBoard()
         self.rules = game_rules.GameRules()
 
-    """
-    Purpose:
-        Checks the base locations on the GameBoard to ensure they're adjacent
-    Precond:
-        :param user_picks: list where [0] is first location and [1] is second location
-                            first integer is the row, and second is the column
-    Return:
-        True if spaces are adjacent, False otherwise
-    """
     def spots_adjacent(self, user_picks: list([[int, int], [int, int]])) -> bool:
+        """
+        Purpose:
+            Checks the base locations on the GameBoard to ensure they're adjacent
+        Precond:
+            :param user_picks: list where [0] is first location and [1] is second location
+                                first integer is the row, and second is the column
+        Return:
+            True if spaces are adjacent, False otherwise
+        """
         first = user_picks[0]
         second = user_picks[1]
         # first possibility is row value is same, and col is +/- 1
@@ -31,20 +31,20 @@ class GameControl(board.GameBoard, game_rules.GameRules):
             return True
         return False
 
-    """
-    Purpose:
-        Checks a list of potential codons to see if it matches the game's target
-    Precond:
-        :param potential_codons: List of 4 potential codons
-                                    [0] horizontal codon from first position
-                                    [1] vertical codon from first position
-                                    [2] horizontal codon from second position
-                                    [3] vertical codon from second position
-    Return:
-        A string corresponding to which of the 4 codons matched
-        Or None if none of them match
-    """
     def valid_codon(self, potential_codons: list([str])):
+        """
+        Purpose:
+            Checks a list of potential codons to see if it matches the game's target
+        Precond:
+            :param potential_codons: List of 4 potential codons
+                                        [0] horizontal codon from first position
+                                        [1] vertical codon from first position
+                                        [2] horizontal codon from second position
+                                        [3] vertical codon from second position
+        Return:
+            A string corresponding to which of the 4 codons matched
+            Or None if none of them match
+        """
         target = self.rules.get_codon()
         if target == potential_codons[0] or target[::-1] == potential_codons[1]:
             return "hor1"
@@ -61,20 +61,21 @@ class GameControl(board.GameBoard, game_rules.GameRules):
 # TODO create a function that checks the board to make sure the codon is there
 # TODO creeate a function that resets the board if above function doesn't return true
 
+
 if __name__ == "__main__":
-        #test for spots_adjacent()
+    # test for spots_adjacent()
     test = GameControl()
-    selection = [[4,4],[5,5]]
+    selection = [[4, 4], [5, 5]]
     result = test.spots_adjacent(selection)
     if (result != False):
         print("spots_adjacent() fails when spots are not adjacent")
 
-    selection = [[4,4],[4,5]]
+    selection = [[4, 4], [4, 5]]
     result = test.spots_adjacent(selection)
     if (result != True):
         print("spots_adjacent() fails when rows are adjacent")
-    
-    selection = [[4,4],[5,4]]
+
+    selection = [[4, 4], [5, 4]]
     result = test.spots_adjacent(selection)
     if (result != True):
         print("spots_adjacent() fails when cols are adjacent")
@@ -82,7 +83,7 @@ if __name__ == "__main__":
     result = test.valid_codon(["ATG", "ACC", "GTA", "LOL"])
     if (result != "hor1"):
         print("valid_codon() does not find hor1")
-    
+
     result = test.valid_codon(["AGG", "ACC", "GTA", "ATG"])
     if (result != "ver2"):
         print("valid_codon() does not find ver2")
