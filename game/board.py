@@ -122,6 +122,20 @@ class GameBoard:
 
         return codons
 
+    def change_nucleotide(self, target: list([int, int])) -> None:
+        """
+        Purpose:
+            Changes a specific nucleotide on the board
+        Precond:
+            :param target: specific row and column that needs to be changed (not idx)
+        Postcond:
+            :self.game_board will now contain the new nucleotide at target location
+        """
+        # Convert to idx and change nucleotide
+        self.game_board[target[0]-1][target[1]-1] = self.random_base()
+        # TODO remove this line
+        self.game_board[target[0]-1][target[1]-1] = "X"
+
     # TODO does this need to be statci
     @staticmethod
     def to_string() -> str:

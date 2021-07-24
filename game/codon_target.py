@@ -3,6 +3,11 @@ class CodonTarget:
     Data storage class to more easily track a specific codon within the game board when searching for matches.
     """
 
+    codon: str
+    loc1: list([int, int])
+    loc2: list([int, int])
+    loc3: list([int, int])
+
     def __init__(self, codon: str, loc1: list([int, int]), loc2: list([int, int]), loc3: list([int, int])) -> None:
         self.codon = codon
         self.loc1 = loc1

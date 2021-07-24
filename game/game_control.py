@@ -34,11 +34,7 @@ class GameControl():
         Purpose:
             Checks a list of potential codons to see if it matches the game's target
         Precond:
-            :param potential_codons: List of potential codons from game_rules.possible_codons
-                                        [0] string for codon
-                                        [1] [int, int] for location of first base
-                                        [2] [int, int] for location of second base
-                                        [3] [int, int] for location of third base
+            :param potential_codons: List of potential CodonTargets from game_rules.
         Return:
             The codon from the list of potential codons, that is a match
             Or None if none of them match
@@ -46,8 +42,8 @@ class GameControl():
         target = self.rules.get_codon()
         # Check each codon in the potential list
         for codon in potential_codons:
-            # if the string matches the target sequence, then return the entire codon item
-            if target == codon.codon or target.__reversed__ == codon.codon:
+            # if the string matches the target sequence (or reverse), then return the entire codon item
+            if target == codon.codon or target[::-1] == codon.codon:
                 return codon
         return None
 
@@ -62,12 +58,12 @@ class GameControl():
                 And the codon format as per game_rules.possible_codons()
         """
         # Create a new board where you have switched the two user choices
-        new_board = self.game_board.copy()
-        base_1 = new_board[user_picks[0][0]][user_picks[0][1]]
-        base_2 = new_board[user_picks[1][0]][user_picks[1][1]]
-        holder = base_1
-        base_1 = base_2
-        base_2 = holder
+        new_board = self.board.get_board().copy()
+        # -1 to ensure conversion to idx
+        base_1 = new_board[user_picks[0][0] - 1][user_picks[0][1] - 1]
+        base_2 = new_board[user_picks[1][0] - 1][user_picks[1][1] - 1]
+        new_board[user_picks[0][0] - 1][user_picks[0][1] - 1] = base_2
+        new_board[user_picks[1][0] - 1][user_picks[1][1] - 1] = base_1
 
         possible_codons = []
         for choice in user_picks:
@@ -75,14 +71,21 @@ class GameControl():
                 self.rules.possible_codons(choice, new_board))
         codon_match = self.valid_codon(possible_codons)
         if codon_match != None:
-            self.board.game_board = new_board
+            self.update_board(new_board, codon_match)
             return (True, codon_match)
         else:
             return (False, codon_match)
-            # TODO update this to now work with console_interaction
             # TODO create a function that deletes replaces the base pairs that match
             # TODO create a function that checks the board to make sure the codon is there
             # TODO creeate a function that resets the board if above function doesn't return true
+
+    def update_board(self, new_board: list([]), matched_codon: CodonTarget) -> bool:
+        # Reset game board
+        self.board.game_board = new_board
+        # Change each of the matched nucleotides in the CodonTarget item
+        self.board.change_nucleotide(matched_codon.loc1)
+        self.board.change_nucleotide(matched_codon.loc2)
+        self.board.change_nucleotide(matched_codon.loc3)
 
 
 if __name__ == "__main__":

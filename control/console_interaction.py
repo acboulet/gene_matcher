@@ -19,7 +19,7 @@ class ConsolePlay:
             while not correct_turn:
                 self.start_turn()
                 user_values = self.take_turn()
-                codon_match = self.check_turn(user_values)
+                codon_match = self.control.check_user_choices(user_values)
                 if codon_match[0]:
                     correct_turn = True
                     self.control.rules.next_codon()
@@ -87,22 +87,22 @@ class ConsolePlay:
             else:
                 print("Input was not correct. Try again.")
 
-    def check_turn(self, user_picks: list([[int, int], [int, int]])) -> tuple([bool, str]):
-        """
-        Purpose:
-            Checks to make sure the user selection matches the target codon.
-        Precond:
-            :param user_picks: list where [0] is first location and [1] is second location
-                                first integer is the row, and second is the column
-        Return: True if user codon matches target codon
-                Str value corresponding to which codon matched
-        """
-        # For each location picked by the user, return all the potential codons attached
-        # TODO: WILL NEED TO CHANGE THIS TO CHECK FOR POTENTIAL CODONS WHEN POSITIONS HAVE CHANGED
-        possible_codons = []
-        for choice in user_picks:
-            possible_codons.extend(self.control.board.possible_codons(choice))
-        codon_match = self.control.valid_codon(possible_codons)
-        if codon_match != None:
-            return (True, codon_match)
-        return (False, codon_match)
+    # def check_turn(self, user_picks: list([[int, int], [int, int]])) -> tuple([bool, str]):
+    #     """
+    #     Purpose:
+    #         Checks to make sure the user selection matches the target codon.
+    #     Precond:
+    #         :param user_picks: list where [0] is first location and [1] is second location
+    #                             first integer is the row, and second is the column
+    #     Return: True if user codon matches target codon
+    #             Str value corresponding to which codon matched
+    #     """
+    #     # For each location picked by the user, return all the potential codons attached
+    #     # TODO: WILL NEED TO CHANGE THIS TO CHECK FOR POTENTIAL CODONS WHEN POSITIONS HAVE CHANGED
+    #     possible_codons = []
+    #     for choice in user_picks:
+    #         possible_codons.extend(self.control.board.possible_codons(choice))
+    #     codon_match = self.control.valid_codon(possible_codons)
+    #     if codon_match != None:
+    #         return (True, codon_match)
+    #     return (False, codon_match)
