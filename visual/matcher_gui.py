@@ -91,7 +91,7 @@ class MatcherGui():
 
     def __init__(self, master):
         button_frame = Frame(master)
-        master.title("nucleotide_buttons")
+        # master.title("nucleotide_buttons")
 
         button_frame.grid(pady=10, padx=10)
 
@@ -442,5 +442,6 @@ class MatcherGui():
             self.count += 1
 
 
-gui = MatcherGui(root)
-root.mainloop()
+if __name__ == "__main__":
+    gui = MatcherGui(root)
+    root.mainloop()

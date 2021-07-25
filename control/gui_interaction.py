@@ -1,37 +1,56 @@
-from tkinter import Label, PanedWindow, Tk
+from tkinter import Frame, Label, PanedWindow, Tk
 from tkinter.constants import BOTH, VERTICAL
+from visual.matcher_gui import MatcherGui
+# from visual.display_gui import DisplayGui
 
-root = Tk()
-root.title("Interaction")
-root.geometry("600x600")
+# root = Tk()
+# root.title("Interaction")
+# root.geometry("600x600")
 
 
 class InteractionGui():
-    display_panel: PanedWindow
-    match_panel: PanedWindow
+    complete_panel: PanedWindow  # The entire game window
+    display_panel: PanedWindow  # The display window split into two
+    # display_gui: DisplayGui  # The gui for displaying interaction
+    match_panel: PanedWindow  # The
+    matcher_gui: MatcherGui  # The gui for displaying matching pairs
     left_label: Label
 
     def __init__(self, root) -> None:
-        self.display_panel = PanedWindow(bd=4, relief="raised", bg="red")
-        self.display_panel.pack(fill=BOTH, expand=1)
+        game_frame = Frame(root)
 
-        self.left_label = Label(self.display_panel, text="Left Panel", width=5)
-        self.display_panel.add(self.left_label)
+        self.complete_panel = PanedWindow(
+            game_frame, bd=4, relief="raised", bg="red")
+        self.complete_panel.pack(fill=BOTH, expand=1)
 
-        self.panel_2 = PanedWindow(
-            self.display_panel, orient=VERTICAL, bd=4, relief="raised", bg="blue", width=500)
-        self.display_panel.add(self.panel_2)
+        self.left_label = Label(self.complete_panel,
+                                text="Left Panel", width=5)
+        self.complete_panel.add(self.left_label)
 
-        self.top = Label(self.panel_2, text="Top panel")
-        self.panel_2.add(self.top)
+        self.display_panel = PanedWindow(
+            self.complete_panel, orient=VERTICAL, bd=4, relief="raised", bg="blue", width=500)
+        self.complete_panel.add(self.display_panel)
 
-        self.bottom = Label(self.panel_2, text="Bottom panel")
-        self.panel_2.add(self.bottom)
+        self.top = Label(self.display_panel, text="Top panel")
+        self.display_panel.add(self.top)
+
+        self.matcher_gui = MatcherGui(self.display_panel)
+        # self.display_panel.add(self.matcher_gui)
+
+        # self.bottom = Label(self.display_panel, text="Bottom panel")
+        # self.display_panel.add(self.bottom)
 
         self.right_label = Label(
-            self.display_panel, text="Right Panel", width=5)
-        self.display_panel.add(self.right_label)
+            self.complete_panel, text="Right Panel", width=5)
+        self.complete_panel.add(self.right_label)
+
+    def run(self):
+        self.root.mainloop()
 
 
-gui = InteractionGui(root)
-root.mainloop()
+if __name__ == "__main__":
+    # root = Tk()
+    # root.title("Interaction")
+    # root.geometry("600x600")
+    gui = InteractionGui(root)
+    root.mainloop()
