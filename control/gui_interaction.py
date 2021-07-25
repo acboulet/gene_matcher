@@ -36,6 +36,7 @@ class InteractionGui():
         self.display_panel.add(self.top)
 
         # self.matcher_gui = MatcherGui(self.display_panel)
+        # self.matcher_gui.pack(fill=BOTH)
         # self.display_panel.add(self.matcher_gui)
 
         self.bottom = Label(self.display_panel, text="Bottom panel")
