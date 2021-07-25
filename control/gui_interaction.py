@@ -18,6 +18,7 @@ class InteractionGui():
 
     def __init__(self, root) -> None:
         game_frame = Frame(root)
+        game_frame.pack(fill=BOTH, expand=1)
 
         self.complete_panel = PanedWindow(
             game_frame, bd=4, relief="raised", bg="red")
@@ -34,11 +35,12 @@ class InteractionGui():
         self.top = Label(self.display_panel, text="Top panel")
         self.display_panel.add(self.top)
 
-        self.matcher_gui = MatcherGui(self.display_panel)
+        # self.matcher_gui = MatcherGui(self.display_panel)
         # self.display_panel.add(self.matcher_gui)
 
-        # self.bottom = Label(self.display_panel, text="Bottom panel")
-        # self.display_panel.add(self.bottom)
+        self.bottom = Label(self.display_panel, text="Bottom panel")
+        self.bottom.pack(fill=BOTH)
+        self.display_panel.add(self.bottom)
 
         self.right_label = Label(
             self.complete_panel, text="Right Panel", width=5)
