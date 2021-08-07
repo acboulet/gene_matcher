@@ -109,6 +109,7 @@ class MatcherGui():
                           height=button_height, width=button_width, command=lambda: self.button_click(self.b12, 1, 2))
         self.b12.grid(row=current_row, column=current_col)
 
+
         current_col += 1
         self.b13 = Button(text=str(current_row) + ":" + str(current_col),
                           height=button_height, width=button_width, command=lambda: self.button_click(self.b13, 1, 3))
