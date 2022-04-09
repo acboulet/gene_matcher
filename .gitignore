@@ -1,5 +1,5 @@
-# Pycaches
-/*/__pycache__/
+# Runtime Pycaches
+*.pyc
 
 # VScode files
 gene_matcher.code-workspace
