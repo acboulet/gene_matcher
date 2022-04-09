@@ -1,11 +1,9 @@
+from game.codon_target import CodonTarget
 from game import board, game_rules
 # import board, game_rules
 
 
-class GameControl(board.GameBoard, game_rules.GameRules):
-
-    board: board.GameBoard
-    rules: game_rules.GameRules
+class GameControl():
 
     def __init__(self) -> None:
         self.board = board.GameBoard()
@@ -31,35 +29,62 @@ class GameControl(board.GameBoard, game_rules.GameRules):
             return True
         return False
 
-    def valid_codon(self, potential_codons: list([str])):
+    def valid_codon(self, potential_codons: list([CodonTarget])) -> CodonTarget:
         """
         Purpose:
             Checks a list of potential codons to see if it matches the game's target
         Precond:
-            :param potential_codons: List of 4 potential codons
-                                        [0] horizontal codon from first position
-                                        [1] vertical codon from first position
-                                        [2] horizontal codon from second position
-                                        [3] vertical codon from second position
+            :param potential_codons: List of potential CodonTargets from game_rules.
         Return:
-            A string corresponding to which of the 4 codons matched
+            The codon from the list of potential codons, that is a match
             Or None if none of them match
         """
         target = self.rules.get_codon()
-        if target == potential_codons[0] or target[::-1] == potential_codons[1]:
-            return "hor1"
-        elif target == potential_codons[1] or target[::-1] == potential_codons[1]:
-            return "ver1"
-        elif target == potential_codons[2] or target[::-1] == potential_codons[2]:
-            return "hor2"
-        elif target == potential_codons[3] or target[::-1] == potential_codons[3]:
-            return "ver2"
-        else:
-            return None
+        # Check each codon in the potential list
+        for codon in potential_codons:
+            # if the string matches the target sequence (or reverse), then return the entire codon item
+            if target == codon.codon or target[::-1] == codon.codon:
+                return codon
+        return None
 
-# TODO create a function that deletes replaces the base pairs that match
-# TODO create a function that checks the board to make sure the codon is there
-# TODO creeate a function that resets the board if above function doesn't return true
+    def check_user_choices(self, user_picks: list([[int, int], [int, int]])) -> tuple([bool, list]):
+        """
+        Purpose:
+            Checks if user selection matches the target codon
+        Precond:
+            :param user_picks: list where [0] is first location and [1] is second location
+                                first integer is the row, and second is the column
+        Return: True if user codon matches the codon target, false otherwise
+                And the codon format as per game_rules.possible_codons()
+        """
+        # Create a new board where you have switched the two user choices
+        new_board = self.board.get_board().copy()
+        # -1 to ensure conversion to idx
+        base_1 = new_board[user_picks[0][0] - 1][user_picks[0][1] - 1]
+        base_2 = new_board[user_picks[1][0] - 1][user_picks[1][1] - 1]
+        new_board[user_picks[0][0] - 1][user_picks[0][1] - 1] = base_2
+        new_board[user_picks[1][0] - 1][user_picks[1][1] - 1] = base_1
+
+        possible_codons = []
+        for choice in user_picks:
+            possible_codons.extend(
+                self.rules.possible_codons(choice, new_board))
+        codon_match = self.valid_codon(possible_codons)
+        if codon_match != None:
+            self.update_board(new_board, codon_match)
+            return (True, codon_match)
+        else:
+            return (False, codon_match)
+            # TODO create a function that checks the board to make sure the codon is there
+            # TODO creeate a function that resets the board if above function doesn't return true
+
+    def update_board(self, new_board: list([]), matched_codon: CodonTarget) -> bool:
+        # Reset game board
+        self.board.game_board = new_board
+        # Change each of the matched nucleotides in the CodonTarget item
+        self.board.change_nucleotide(matched_codon.loc1)
+        self.board.change_nucleotide(matched_codon.loc2)
+        self.board.change_nucleotide(matched_codon.loc3)
 
 
 if __name__ == "__main__":

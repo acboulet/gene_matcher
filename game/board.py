@@ -9,6 +9,9 @@ class GameBoard:
     def __init__(self) -> None:
         self.new_board()
 
+    def get_board(self):
+        return self.game_board
+
     @staticmethod
     def new_board():
         """
@@ -37,6 +40,7 @@ class GameBoard:
         return bases[rand_int]
 
     def possible_codons(self, player_choice: list([int, int])) -> list([str, str]):
+        # TODO remove when game_rules is finished
         """
         Purpose:
             Given a players choice of row and column values, returns the horizontal and vertical codons at that location on the board
@@ -118,6 +122,21 @@ class GameBoard:
 
         return codons
 
+    def change_nucleotide(self, target: list([int, int])) -> None:
+        """
+        Purpose:
+            Changes a specific nucleotide on the board
+        Precond:
+            :param target: specific row and column that needs to be changed (not idx)
+        Postcond:
+            :self.game_board will now contain the new nucleotide at target location
+        """
+        # Convert to idx and change nucleotide
+        self.game_board[target[0]-1][target[1]-1] = self.random_base()
+        # TODO remove this line
+        self.game_board[target[0]-1][target[1]-1] = "X"
+
+    # TODO does this need to be statci
     @staticmethod
     def to_string() -> str:
         """
